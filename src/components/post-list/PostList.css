@@ -1,0 +1,11 @@
+.posts {
+}
+.posts__title {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 25px;
+  text-align: center;
+}
+
+.posts__content {
+}

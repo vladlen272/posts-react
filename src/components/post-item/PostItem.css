@@ -1,0 +1,25 @@
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 25px;
+  margin: 25px;
+
+  border: 2px solid blue;
+}
+.post__content {
+}
+.post__number {
+}
+.post__title {
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.post__body {
+  font-size: 16px;
+}
+.post__buttons {
+  font-size: 16px;
+}
