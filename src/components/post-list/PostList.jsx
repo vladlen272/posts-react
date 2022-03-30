@@ -2,14 +2,17 @@ import React from "react";
 import Post from "../post-item/PostItem";
 import "./PostList.css";
 
-function Posts(props) {
+function Posts({posts,title, remove}) {
+  const removePost = (post) => {
+    remove(post)
+  }
   return (
     <div className="posts">
-      <h1 className="posts__title">{props.title}</h1>
+      <h1 className="posts__title">{title}</h1>
       <div className="posts__content">
         {" "}
-        {props.posts.map((post) => (
-          <Post post={post} key={post.id} />
+        {posts.map((post, index) => (
+          <Post remove={removePost}  post={post} index={index} key={post.id} />
         ))}{" "}
       </div>
     </div>
