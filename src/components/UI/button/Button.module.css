@@ -1,10 +1,10 @@
 .button {
-    background-color: inherit;
-    padding: 8px 25px;
-    border: 1px solid blue;
+  background-color: inherit;
+  padding: 8px 25px;
+  border: 1px solid blue;
 
-    font-size: 16px;
-    font-weight: 600;
+  font-size: 16px;
+  font-weight: 600;
 
-    cursor: pointer;
+  cursor: pointer;
 }

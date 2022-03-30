@@ -11,7 +11,9 @@ function Post(props) {
         </div>
         <div className="post__body">{props.post.body}</div>
       </div>
-      <div className="post__buttons"><Button>delete</Button></div>
+      <div className="post__buttons">
+        <Button>delete</Button>
+      </div>
     </div>
   );
 }

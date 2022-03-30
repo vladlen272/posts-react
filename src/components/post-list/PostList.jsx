@@ -2,7 +2,7 @@ import React from "react";
 import Post from "../post-item/PostItem";
 import "./PostList.css";
 
-const Posts = (props) => {
+function Posts(props) {
   return (
     <div className="posts">
       <h1 className="posts__title">{props.title}</h1>
@@ -14,6 +14,6 @@ const Posts = (props) => {
       </div>
     </div>
   );
-};
+}
 
 export default Posts;
