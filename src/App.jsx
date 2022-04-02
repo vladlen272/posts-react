@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from "react";
 import "./styles/App.css";
-import Posts from "./components/post-list/PostList";
 import AddPostForm from "./components/add-post-form/AddPostForm";
-import Select from "./components/UI/select/Select";
-import Input from "./components/UI/input/Input";
+import PostsFilter from "./components/posts-filter/PostsFilter";
+import PostList from "./components/post-list/PostList";
+import Hr from "./components/UI/hr/Hr";
 function App() {
   const [posts, setPosts] = useState([
     { id: 1, title: "js", body: "js is better" },
@@ -12,24 +12,22 @@ function App() {
     { id: 4, title: "redux", body: "i dont know bro" },
   ]);
 
-  const [selectedSort, setSelectedSort] = useState("");
-
-  const [searchQuery, setSearchQuery] = useState("");
+  const [filter, setFilter] = useState({ select: "", search: "" });
 
   const sortedPosts = useMemo(() => {
-    if (selectedSort) {
+    if (filter.select) {
       return [...posts].sort((a, b) =>
-        a[selectedSort].localeCompare(b[selectedSort])
+        a[filter.select].localeCompare(b[filter.select])
       );
     }
     return posts;
-  }, [selectedSort, posts]);
+  }, [filter.select, posts]);
 
   const sortedAndSearchedPosts = useMemo(() => {
     return sortedPosts.filter((post) =>
-      post.title.toLowerCase().includes(searchQuery.toLowerCase())
+      post.title.toLowerCase().includes(filter.search.toLowerCase())
     );
-  }, [searchQuery, sortedPosts]);
+  }, [filter.search, sortedPosts]);
 
   const createPost = (newPost) => {
     const newPostId = Date.now();
@@ -41,39 +39,17 @@ function App() {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
 
-  const sortPosts = (sort) => {
-    setSelectedSort(sort);
-  };
-
   return (
     <div className="App">
       <AddPostForm create={createPost} />
-      <hr
-        style={{
-          margin: "15px 0",
-          border: "0.1px solid blue",
-          backgroundColor: "blue",
-        }}
-      />
-      <Input
-        placeholder="search"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      ></Input>
-      <Select
-        onChange={sortPosts}
-        value={selectedSort}
-        defaultValue={"select"}
-        options={[
-          { value: "title", name: "title" },
-          { value: "body", name: "body" },
-        ]}
-      />
-      <Posts
+      <Hr />
+      <PostsFilter filter={filter} setFilter={setFilter} />
+
+      <PostList
         remove={removePost}
         posts={sortedAndSearchedPosts}
         title="Posts about js"
-      />
+      ></PostList>
     </div>
   );
 }

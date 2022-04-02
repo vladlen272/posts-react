@@ -2,7 +2,7 @@ import React from "react";
 import Post from "../post-item/PostItem";
 import "./PostList.css";
 
-function Posts({ posts, title, remove }) {
+function PostList({ posts, title, remove }) {
   const removePost = (post) => {
     remove(post);
   };
@@ -21,4 +21,4 @@ function Posts({ posts, title, remove }) {
   );
 }
 
-export default Posts;
+export default PostList;
