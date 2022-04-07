@@ -6,31 +6,15 @@ import PostList from "./components/post-list/PostList";
 import Hr from "./components/UI/hr/Hr";
 import Modal from "./components/UI/modal/Modal";
 import Button from "./components/UI/button/Button";
+import { useSortedAndSearchedPosts } from "./hooks/usePosts";
 function App() {
-  const [posts, setPosts] = useState([
-    { id: 1, title: "js", body: "js is better" },
-    { id: 2, title: "python", body: "no python is better" },
-    { id: 3, title: "react", body: "what are you speaking about" },
-    { id: 4, title: "redux", body: "i dont know bro" },
-  ]);
+  const [posts, setPosts] = useState([]);
 
-  const [filter, setFilter] = useState({ select: "", search: "" });
+  const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
 
-  const sortedPosts = useMemo(() => {
-    if (filter.select) {
-      return [...posts].sort((a, b) =>
-        a[filter.select].localeCompare(b[filter.select])
-      );
-    }
-    return posts;
-  }, [filter.select, posts]);
+  const sortedAndSearchedPosts = useSortedAndSearchedPosts(posts, filter.sort, filter.query)
 
-  const sortedAndSearchedPosts = useMemo(() => {
-    return sortedPosts.filter((post) =>
-      post.title.toLowerCase().includes(filter.search.toLowerCase())
-    );
-  }, [filter.search, sortedPosts]);
 
   const createPost = (newPost) => {
     const newPostId = Date.now();

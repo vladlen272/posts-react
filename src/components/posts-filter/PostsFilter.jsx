@@ -6,12 +6,12 @@ function PostsFilter({filter, setFilter}) {
     <div>
       <Input
         placeholder="search"
-        value={filter.search}
-        onChange={(e) => setFilter({...filter, search: e.target.value})}
+        value={filter.query}
+        onChange={(e) => setFilter({...filter, query: e.target.value})}
       ></Input>
       <Select
-        onChange={selectedSort => setFilter({...filter, select: selectedSort})}
-        value={filter.select}
+        onChange={selectedSort => setFilter({...filter, sort: selectedSort})}
+        value={filter.sort}
         defaultValue={"select"}
         options={[
           { value: "title", name: "title" },
