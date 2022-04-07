@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "../UI/button/Button";
 import Input from "../UI/input/Input";
 
-function AddPostForm({create}) {
+function AddPostForm({create, cancel}) {
 
 
   const [newPost, setNewPost] = useState({title: "", body: "" });
@@ -11,6 +11,13 @@ function AddPostForm({create}) {
     e.preventDefault()
     create(newPost)
     setNewPost({title: '', body: ''})
+  }
+
+  const cancelAddingPosts = (e) => {
+    e.preventDefault()
+    cancel(false)
+    setNewPost({title: '', body: ''})
+
   }
 
   return (
@@ -30,6 +37,7 @@ function AddPostForm({create}) {
         }
       />
       <Button onClick={addNewPost}>add new post</Button>
+      <Button onClick={cancelAddingPosts}>cancel</Button>
     </form>
   );
 }

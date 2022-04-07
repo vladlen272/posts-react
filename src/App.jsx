@@ -4,6 +4,8 @@ import AddPostForm from "./components/add-post-form/AddPostForm";
 import PostsFilter from "./components/posts-filter/PostsFilter";
 import PostList from "./components/post-list/PostList";
 import Hr from "./components/UI/hr/Hr";
+import Modal from "./components/UI/modal/Modal";
+import Button from "./components/UI/button/Button";
 function App() {
   const [posts, setPosts] = useState([
     { id: 1, title: "js", body: "js is better" },
@@ -13,6 +15,7 @@ function App() {
   ]);
 
   const [filter, setFilter] = useState({ select: "", search: "" });
+  const [modal, setModal] = useState(false);
 
   const sortedPosts = useMemo(() => {
     if (filter.select) {
@@ -39,9 +42,18 @@ function App() {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
 
+  const cancelCreating = (value) => {
+    setModal(value)
+  }
+
   return (
     <div className="App">
-      <AddPostForm create={createPost} />
+      <Button style={{ marginTop: "30px" }} onClick={() => setModal(true)}>
+        Create a new post
+      </Button>
+      <Modal visible={modal} setVisible={setModal}>
+        <AddPostForm create={createPost} cancel={cancelCreating} />
+      </Modal>
       <Hr />
       <PostsFilter filter={filter} setFilter={setFilter} />
 
