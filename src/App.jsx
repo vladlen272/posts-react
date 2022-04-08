@@ -9,11 +9,13 @@ import Button from "./components/UI/button/Button";
 import { useSortedAndSearchedPosts } from "./hooks/usePosts";
 import axios from "axios";
 import PostService from "./API/PostService";
+import Loader from "./components/UI/loader/Loader";
 function App() {
   const [posts, setPosts] = useState([]);
 
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
+  const [isPostsLoading, setIsPostsLoading] = useState(false);
 
   const sortedAndSearchedPosts = useSortedAndSearchedPosts(
     posts,
@@ -22,13 +24,17 @@ function App() {
   );
 
   useEffect(() => {
-    fetchPosts()
-  }, [])
+    fetchPosts();
+  }, []);
 
-  const  fetchPosts = async () => {
-    const posts = await PostService.getAll()
-    setPosts(posts)
-  }
+  const fetchPosts = async () => {
+    setIsPostsLoading(true);
+    setTimeout(async () => {
+      const posts = await PostService.getAll();
+      setPosts(posts);
+      setIsPostsLoading(false);
+    }, 2500);
+  };
 
   const createPost = (newPost) => {
     const newPostId = Date.now();
@@ -54,12 +60,15 @@ function App() {
       </Modal>
       <Hr />
       <PostsFilter filter={filter} setFilter={setFilter} />
-
-      <PostList
-        remove={removePost}
-        posts={sortedAndSearchedPosts}
-        title="Posts about js"
-      ></PostList>
+      {isPostsLoading ? (
+        <Loader/>
+      ) : (
+        <PostList
+          remove={removePost}
+          posts={sortedAndSearchedPosts}
+          title="Posts about js"
+        ></PostList>
+      )}
     </div>
   );
 }
