@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./styles/App.css";
 import AddPostForm from "./components/add-post-form/AddPostForm";
 import PostsFilter from "./components/posts-filter/PostsFilter";
@@ -7,14 +7,28 @@ import Hr from "./components/UI/hr/Hr";
 import Modal from "./components/UI/modal/Modal";
 import Button from "./components/UI/button/Button";
 import { useSortedAndSearchedPosts } from "./hooks/usePosts";
+import axios from "axios";
+import PostService from "./API/PostService";
 function App() {
   const [posts, setPosts] = useState([]);
 
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
 
-  const sortedAndSearchedPosts = useSortedAndSearchedPosts(posts, filter.sort, filter.query)
+  const sortedAndSearchedPosts = useSortedAndSearchedPosts(
+    posts,
+    filter.sort,
+    filter.query
+  );
 
+  useEffect(() => {
+    fetchPosts()
+  }, [])
+
+  const  fetchPosts = async () => {
+    const posts = await PostService.getAll()
+    setPosts(posts)
+  }
 
   const createPost = (newPost) => {
     const newPostId = Date.now();
@@ -27,8 +41,8 @@ function App() {
   };
 
   const cancelCreating = (value) => {
-    setModal(value)
-  }
+    setModal(value);
+  };
 
   return (
     <div className="App">
