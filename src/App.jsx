@@ -10,7 +10,8 @@ import { useSortedAndSearchedPosts } from "./hooks/usePosts";
 import PostService from "./API/PostService";
 import Loader from "./components/UI/loader/Loader";
 import { useFetching } from "./hooks/useFetching";
-
+import { getPageCount } from "./utils/pages";
+import { usePagination } from "./hooks/usePagination";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -19,6 +20,14 @@ function App() {
   const [modal, setModal] = useState(false);
 
 
+  const [totalPages, setTotalPages] = useState(0)
+
+  const [limit, setLimit] = useState(10)
+  const [page, setPage] = useState(1)
+
+  let pagesArray = usePagination(totalPages)
+  
+  
 
   const sortedAndSearchedPosts = useSortedAndSearchedPosts(
     posts,
@@ -26,16 +35,17 @@ function App() {
     filter.query
   );
 
-  const [fetchPosts, isPostsLoading, postsError] = useFetching(async () => {
-    const response = await PostService.getAll();
+  const [fetchPosts, isPostsLoading, postsError] = useFetching( async () => {
+    const response = await PostService.getAll(limit, page);
     setPosts(response.data);
-  
-  
-  });
+    const totalCount = response.headers['x-total-count']
+    setTotalPages(getPageCount(totalCount, limit))
+  })
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [page]);
+
 
   const createPost = (newPost) => {
     const newPostId = Date.now();
@@ -62,16 +72,18 @@ function App() {
       <Hr />
       <PostsFilter filter={filter} setFilter={setFilter} />
       {isPostsLoading ? (
-        <Loader />
+        <Loader/>
       ) : (
         <PostList
           remove={removePost}
           posts={sortedAndSearchedPosts}
           title="Posts about js"
-          postsError={postsError}
+          postsError = {postsError}
         ></PostList>
       )}
-
+      {pagesArray.map((page, index) => (
+        <Button onClick={() => setPage(page)} key={index}>{page}</Button>
+      ))}
     </div>
   );
 }
