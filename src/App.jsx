@@ -7,15 +7,18 @@ import Hr from "./components/UI/hr/Hr";
 import Modal from "./components/UI/modal/Modal";
 import Button from "./components/UI/button/Button";
 import { useSortedAndSearchedPosts } from "./hooks/usePosts";
-import axios from "axios";
 import PostService from "./API/PostService";
 import Loader from "./components/UI/loader/Loader";
+import { useFetching } from "./hooks/useFetching";
+
+
 function App() {
   const [posts, setPosts] = useState([]);
 
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
-  const [isPostsLoading, setIsPostsLoading] = useState(false);
+
+
 
   const sortedAndSearchedPosts = useSortedAndSearchedPosts(
     posts,
@@ -23,18 +26,16 @@ function App() {
     filter.query
   );
 
+  const [fetchPosts, isPostsLoading, postsError] = useFetching(async () => {
+    const response = await PostService.getAll();
+    setPosts(response.data);
+  
+  
+  });
+
   useEffect(() => {
     fetchPosts();
   }, []);
-
-  const fetchPosts = async () => {
-    setIsPostsLoading(true);
-    setTimeout(async () => {
-      const posts = await PostService.getAll();
-      setPosts(posts);
-      setIsPostsLoading(false);
-    }, 2500);
-  };
 
   const createPost = (newPost) => {
     const newPostId = Date.now();
@@ -61,14 +62,16 @@ function App() {
       <Hr />
       <PostsFilter filter={filter} setFilter={setFilter} />
       {isPostsLoading ? (
-        <Loader/>
+        <Loader />
       ) : (
         <PostList
           remove={removePost}
           posts={sortedAndSearchedPosts}
           title="Posts about js"
+          postsError={postsError}
         ></PostList>
       )}
+
     </div>
   );
 }

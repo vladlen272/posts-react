@@ -4,12 +4,17 @@ import { TransitionGroup } from "react-transition-group";
 import Post from "../post-item/PostItem";
 import "./PostList.css";
 
-function PostList({ posts, title, remove }) {
+function PostList({ posts, title, remove, postsError }) {
   const removePost = (post) => {
     remove(post);
   };
   if (posts.length === 0) {
     title = "You dont have any posts";
+    
+  }
+  if (postsError) {
+    title=
+    "something went wrong"
   }
   return (
     <div className="posts">
@@ -22,6 +27,7 @@ function PostList({ posts, title, remove }) {
             </CSSTransition>
           ))}
         </TransitionGroup>
+        
       </div>
     </div>
   );
