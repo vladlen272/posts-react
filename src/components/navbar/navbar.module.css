@@ -1,0 +1,21 @@
+.navbar {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 0 15px;
+    border: 1px solid blue;
+    margin: 15px 0;
+    
+}
+
+.item{
+    font-size: 16px;
+    font-weight: 600;
+  
+    cursor: pointer;
+    margin-left: 10px;
+
+    color: black;
+}

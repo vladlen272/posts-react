@@ -15,11 +15,14 @@
 .post__title {
   font-weight: 800;
   font-size: 18px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 .post__body {
   font-size: 16px;
 }
 .post__buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 16px;
 }

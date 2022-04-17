@@ -14,6 +14,7 @@ function PostsFilter({filter, setFilter}) {
         value={filter.sort}
         defaultValue={"select"}
         options={[
+          { value: "default", name: "default" },
           { value: "title", name: "title" },
           { value: "body", name: "body" },
         ]}
