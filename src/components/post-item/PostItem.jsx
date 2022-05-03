@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Button from "../UI/button/Button";
 import "./PostItem.css";
 
-function Post({post, index, remove}) {
+function Post({ post, index, remove }) {
   const removePost = (post) => {
-    remove(post)
-  }
-  const navigate = useNavigate()
+    remove(post);
+  };
+  const navigate = useNavigate();
   return (
     <div className="post">
       <div className="post__content">
@@ -17,8 +17,12 @@ function Post({post, index, remove}) {
         <div className="post__body">{post.body}</div>
       </div>
       <div className="post__buttons">
-        <Button margin={5} onClick={() => navigate(`/posts/${post.id}`)}>open</Button>
-        <Button margin={5} onClick={() => removePost(post)}>delete</Button>
+        <Button margin={5} onClick={() => navigate(`/posts/${post.id}`)}>
+          open
+        </Button>
+        <Button margin={5} onClick={() => removePost(post)}>
+          delete
+        </Button>
       </div>
     </div>
   );

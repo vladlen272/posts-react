@@ -24,19 +24,32 @@ function PostId() {
     fetchCommentsByPostId();
   }, [params.id]);
 
-
   return (
     <div>
-      <h1>hello you are in a post {params.id}</h1>
-      {isLoading ? <Loader /> : PostById.title}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div> <h1
+          style={{
+            fontSize: "26px",
+            
+            margin: "25px 0",
+            fontWeight: "600",
+          }}
+        >
+          {" "}
+          {PostById.title}
+        </h1>
+        <div style={{margin: "-10px 0",}}>{PostById.body}</div>
+        </div>
+      )}
       {error}
 
       <h1
         style={{
-          marginTop: "25px",
+          marginTop: "45px",
           fontSize: "24px",
           fontWeight: "bold",
-          textAlign: "center",
         }}
       >
         comments
@@ -47,8 +60,10 @@ function PostId() {
         <div>
           {comments.map((comment) => (
             <div style={{ marginTop: "15px" }} key={comment.id}>
-              <h1>{comment.email}</h1>
-              <div> {comment.body}</div>
+              <h1 style={{ fontSize: "26px", margin: "15px 0" }}>
+                {comment.email}
+              </h1>
+              <div style={{ fontSize: "18px" }}> {comment.body}</div>
             </div>
           ))}
         </div>

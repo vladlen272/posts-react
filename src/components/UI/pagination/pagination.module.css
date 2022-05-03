@@ -4,6 +4,8 @@
     margin-top: 25px;
 }
 
-.button {
-    margin: 7.5px;
+
+
+.active {
+    color: royalblue;
 }

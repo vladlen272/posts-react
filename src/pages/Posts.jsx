@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import PostService from "../API/PostService";
 
@@ -16,6 +16,8 @@ import Hr from "../components/UI/hr/Hr";
 import Loader from "../components/UI/loader/Loader";
 import Modal from "../components/UI/modal/Modal";
 import Pagination from "../components/UI/pagination/Pagination";
+import { useObserver } from "../hooks/useObserver";
+import Select from "../components/UI/select/Select";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -27,18 +29,19 @@ const Posts = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
 
+  const lastElement = useRef();
+
   const sortedAndSearchedPosts = useSortedAndSearchedPosts(
     posts,
     filter.sort,
     filter.query
   );
 
-
   let pagesArray = usePagination(totalPages);
 
   const [fetchPosts, isPostsLoading, postsError] = useFetching(async () => {
     const response = await PostService.getAll(limit, page);
-    setPosts(response.data);
+    setPosts([...posts, ...response.data]);
     const totalCount = response.headers["x-total-count"];
     setTotalPages(getPageCount(totalCount, limit));
   });
@@ -47,7 +50,9 @@ const Posts = () => {
     fetchPosts();
   }, [page]);
 
-
+  useObserver(lastElement, isPostsLoading, page < totalPages, () => {
+    setPage(page + 1);
+  });
 
   const changePage = (page) => {
     setPage(page);
@@ -77,16 +82,18 @@ const Posts = () => {
       </Modal>
       <Hr />
       <PostsFilter filter={filter} setFilter={setFilter} />
-      {isPostsLoading ? (
-        <Loader />
-      ) : (
-        <PostList
-          remove={removePost}
-          posts={sortedAndSearchedPosts}
-          title="Posts about js"
-          postsError={postsError}
-        ></PostList>
-      )}
+      {isPostsLoading && <Loader />}
+ 
+      <PostList
+        remove={removePost}
+        posts={sortedAndSearchedPosts}
+        title="Posts about js"
+        postsError={postsError}
+      ></PostList>
+      <div
+        style={{ height: "20px", background: "blue" }}
+        ref={lastElement}
+      ></div>
       <Pagination list={pagesArray} changeItem={(page) => changePage(page)} />
     </div>
   );
