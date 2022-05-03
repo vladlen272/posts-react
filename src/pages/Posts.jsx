@@ -48,7 +48,7 @@ const Posts = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, [page]);
+  }, [page, limit]);
 
   useObserver(lastElement, isPostsLoading, page < totalPages, () => {
     setPage(page + 1);
@@ -81,20 +81,28 @@ const Posts = () => {
         <AddPostForm create={createPost} cancel={cancelCreating} />
       </Modal>
       <Hr />
-      <PostsFilter filter={filter} setFilter={setFilter} />
-      {isPostsLoading && <Loader />}
- 
+        
+      <PostsFilter  filter={filter} setFilter={setFilter} />
+      <div style={{marginBottom: "10px"}} ></div>
+      <Select
+        onChange={(value) => setLimit(value)}
+        value={limit}
+        defaultValue="select limit"
+        options={[
+          { value: 5, name: "5" },
+          { value: 10, name: "10" },
+          { value: 25, name: "25" }
+        ]}
+      />
       <PostList
         remove={removePost}
         posts={sortedAndSearchedPosts}
         title="Posts about js"
         postsError={postsError}
       ></PostList>
-      <div
-        style={{ height: "20px", background: "blue" }}
-        ref={lastElement}
-      ></div>
-      <Pagination list={pagesArray} changeItem={(page) => changePage(page)} />
+      <div style={{ height: "20px" }} ref={lastElement}></div>
+      {isPostsLoading && <Loader />}
+      {/* <Pagination list={pagesArray} changeItem={(page) => changePage(page)} /> */}
     </div>
   );
 };
