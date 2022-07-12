@@ -7,6 +7,19 @@ function AddPostForm({ create, cancel }) {
 
   const addNewPost = (e) => {
     e.preventDefault();
+    if (typeof newPost.title === "string" && newPost.title.trim().length == 0) {
+      alert("you must write the title of the post");
+      setNewPost({ ...newPost, title: "" });
+
+      return;
+    }
+    if (Boolean(!newPost.body.trim())) {
+      alert("you must write  the body of the post");
+      setNewPost({ ...newPost, body: "" });
+
+      return;
+    }
+
     create(newPost);
     setNewPost({ title: "", body: "" });
     cancel(false);
@@ -14,8 +27,9 @@ function AddPostForm({ create, cancel }) {
 
   const cancelAddingPosts = (e) => {
     e.preventDefault();
-    cancel(false);
     setNewPost({ title: "", body: "" });
+
+    cancel(false);
   };
 
   return (
