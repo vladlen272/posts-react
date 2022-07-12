@@ -12,7 +12,7 @@ function Post({ post, index, remove }) {
     <div className="post">
       <div className="post__content">
         <div className="post__title">
-          {post.id}. {post.title}
+          {++index}. {post.title}
         </div>
         <div className="post__body">{post.body}</div>
       </div>
